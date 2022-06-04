@@ -6,14 +6,11 @@ public class StatisticResponse {
 
     private Long start;
     private Long end;
-    //data
-    private Map<Long, GetVotesResponse> intervalSplittedStatistic;
-    private Long votes;
+    private Integer votes;
 
-    public StatisticResponse(Long start, Long end, Map<Long, GetVotesResponse> intervalSplittedStatistic, Long votes) {
+    public StatisticResponse(Long start, Long end, Integer votes) {
         this.start = start;
         this.end = end;
-        this.intervalSplittedStatistic = intervalSplittedStatistic;
         this.votes = votes;
     }
 
@@ -33,19 +30,11 @@ public class StatisticResponse {
         this.end = end;
     }
 
-    public Map<Long, GetVotesResponse> getIntervalSplittedStatistic() {
-        return intervalSplittedStatistic;
-    }
-
-    public void setIntervalSplittedStatistic(Map<Long, GetVotesResponse> intervalSplittedStatistic) {
-        this.intervalSplittedStatistic = intervalSplittedStatistic;
-    }
-
-    public Long getVotes() {
+    public Integer getVotes() {
         return votes;
     }
 
-    public void setVotes(Long votes) {
+    public void setVotes(Integer votes) {
         this.votes = votes;
     }
 }
