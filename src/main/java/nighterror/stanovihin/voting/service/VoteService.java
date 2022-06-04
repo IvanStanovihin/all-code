@@ -14,8 +14,12 @@ public class VoteService {
     @Autowired
     private VoteRepository voteRepository;
 
+    @Autowired
+    private StatisticService statisticService;
+
     public void addVote(Vote vote) throws ArtistNotFoundException {
         voteRepository.addVote(vote.getArtist());
+        statisticService.addStatisticRecord(vote);
     }
 
 

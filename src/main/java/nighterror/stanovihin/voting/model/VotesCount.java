@@ -25,4 +25,12 @@ public class VotesCount {
     public void setVotes(Long votes) {
         this.votes = votes;
     }
+
+    @Override
+    public String toString() {
+        return "VotesCount{" +
+                "name='" + name + '\'' +
+                ", votes=" + votes +
+                '}';
+    }
 }

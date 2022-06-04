@@ -1,5 +1,6 @@
 package nighterror.stanovihin.voting;
 
+import nighterror.stanovihin.voting.helpers.TimePrinter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -8,6 +9,7 @@ public class AppStarter {
 
     public static void main(String[] args) {
         SpringApplication.run(AppStarter.class, args);
+        new TimePrinter().start();
     }
 
 }

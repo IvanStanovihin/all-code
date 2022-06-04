@@ -28,4 +28,12 @@ public class Vote {
     public void setArtist(String artist) {
         this.artist = artist;
     }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "phone='" + phone + '\'' +
+                ", artist='" + artist + '\'' +
+                '}';
+    }
 }

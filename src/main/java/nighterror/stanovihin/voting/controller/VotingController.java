@@ -38,18 +38,18 @@ public class VotingController {
         }
         ConsumptionProbe probe = requestManagerService.isAllow(vote.getPhone());
         if (!probe.isConsumed()){
+            //Много запросов с одного номера
             System.out.printf("Request DENIED for phone: %s%n", vote.getPhone() );
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).
                     header("x-ratelimit-limit", Integer.toString(limitsConfig.getBandwidthCapacity()))
                     .header("x-ratelimit-remaining", Long.toString(probe.getRemainingTokens()))
                     .header("x-ratelimit-reset", Long.toString(probe.getNanosToWaitForReset()))
                     .build();
-        }else{
-            System.out.printf("Request allowed for phone: %s%n", vote.getPhone());
         }
         try {
             voteService.addVote(vote);
         }catch(ArtistNotFoundException ex){
+            //Неверный исполнитель
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).

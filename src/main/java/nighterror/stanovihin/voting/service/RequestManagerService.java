@@ -31,10 +31,6 @@ public class RequestManagerService {
     }
 
     private void createBucket(String phone) {
-        System.out.printf("Refill tokens: %s \nRefill time: %s \nBandwidth capacity: %s%n",
-                limitsConfig.getRefillTokens(),
-                limitsConfig.getRefillTime(),
-                limitsConfig.getBandwidthCapacity());
         Refill refill = Refill.intervally(10, Duration.ofMinutes(1));
         Bandwidth limit = Bandwidth.classic(10, refill);
         Bucket bucket = Bucket4j.builder()

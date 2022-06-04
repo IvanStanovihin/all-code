@@ -45,12 +45,12 @@ public class VoteRepository {
             VotesCount votesCount = new VotesCount(entry.getKey(), entry.getValue());
             votesList.add(votesCount);
         }
-        return new GetVotesResponse(votesList.stream().toArray(VotesCount[]::new));
+        return new GetVotesResponse(votesList.toArray(new VotesCount[0]));
     }
 
     private void printStorage(){
         for (Map.Entry<String, Long>entry : votesStorage.entrySet()){
-            System.out.println(String.format("Artist: %s Votes: %s", entry.getKey(), entry.getValue()));
+            System.out.printf("Artist: %s Votes: %s%n", entry.getKey(), entry.getValue());
         }
     }
 

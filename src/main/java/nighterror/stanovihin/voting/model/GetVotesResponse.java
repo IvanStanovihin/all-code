@@ -1,5 +1,7 @@
 package nighterror.stanovihin.voting.model;
 
+import java.util.Arrays;
+
 public class GetVotesResponse {
 
     private VotesCount data[];
@@ -15,4 +17,13 @@ public class GetVotesResponse {
     public void setData(VotesCount[] data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "GetVotesResponse{" +
+                "data=" + Arrays.toString(data) +
+                '}';
+    }
+
+
 }
