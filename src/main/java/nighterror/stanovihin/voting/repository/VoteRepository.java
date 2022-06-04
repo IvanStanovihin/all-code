@@ -17,7 +17,7 @@ import java.util.Map;
 @Component
 public class VoteRepository {
 
-    private Map<String, Long> votesStorage = new HashMap<>();
+    private final Map<String, Long> votesStorage = new HashMap<>();
 
     @PostConstruct
     private void initArtists(){
@@ -39,15 +39,13 @@ public class VoteRepository {
         }
     }
 
-    public String getVotes(){
-        Gson gson = new Gson();
+    public GetVotesResponse getVotes(){
         ArrayList<VotesCount>votesList = new ArrayList<>();
         for (Map.Entry<String, Long> entry : votesStorage.entrySet()){
             VotesCount votesCount = new VotesCount(entry.getKey(), entry.getValue());
             votesList.add(votesCount);
         }
-        GetVotesResponse response = new GetVotesResponse(votesList.stream().toArray(VotesCount[]::new));
-        return gson.toJson(response);
+        return new GetVotesResponse(votesList.stream().toArray(VotesCount[]::new));
     }
 
     private void printStorage(){
