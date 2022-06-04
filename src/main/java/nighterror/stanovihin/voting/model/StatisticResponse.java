@@ -1,40 +1,28 @@
 package nighterror.stanovihin.voting.model;
 
+import java.util.Arrays;
 import java.util.Map;
 
 public class StatisticResponse {
 
-    private Long start;
-    private Long end;
-    private Integer votes;
+   IntervalStatistic[] data;
 
-    public StatisticResponse(Long start, Long end, Integer votes) {
-        this.start = start;
-        this.end = end;
-        this.votes = votes;
+    public StatisticResponse(IntervalStatistic[] data) {
+        this.data = data;
     }
 
-    public Long getStart() {
-        return start;
+    public IntervalStatistic[] getData() {
+        return data;
     }
 
-    public void setStart(Long start) {
-        this.start = start;
+    public void setData(IntervalStatistic[] data) {
+        this.data = data;
     }
 
-    public Long getEnd() {
-        return end;
-    }
-
-    public void setEnd(Long end) {
-        this.end = end;
-    }
-
-    public Integer getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Integer votes) {
-        this.votes = votes;
+    @Override
+    public String toString() {
+        return "StatisticResponse{" +
+                "data=" + Arrays.toString(data) +
+                '}';
     }
 }

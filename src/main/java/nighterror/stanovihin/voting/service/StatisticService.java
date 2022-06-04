@@ -20,35 +20,35 @@ public class StatisticService {
     }
 
     public String getStatistic(Long requestFrom, Long requestTo, Long countIntervals, String artists) {
-        Map<Integer, Map<String, Long>> intervalArtistStat = new HashMap<>();
+        ArrayList<IntervalStatistic>intervalStatistics = new ArrayList<>();
         long requestArea = requestTo - requestFrom;
-        double intervalRange = (requestTo - requestFrom) / (double) countIntervals;
+        long intervalRange = (requestTo - requestFrom) / countIntervals;
         System.out.println("Request area: " + requestArea);
         System.out.println("Interval range: " + intervalRange);
         int intervalIndex = 1;
-        double leftBorder = requestFrom;
-        double rightBorder = requestFrom + intervalRange;
+        long leftBorder = requestFrom;
+        long rightBorder = requestFrom + intervalRange;
         //находим записи подходящие ко времени from и to
         for (int i = 0; i < countIntervals; i++) {
+            Long votes = 0L;
             //Статистика для рассматриваемого интервала
             Map<String, Long> artistsVoteCount = ArtistsInitializer.initArtists();
             //перебираем все записи в хранилище, ищем те которые входят в интервал
             for (Map.Entry<Long, Vote> voteEntry : statisticStorage.entrySet()) {
                 Long voteAddTime = voteEntry.getKey();
-                Vote vote = voteEntry.getValue();
-                String artist = vote.getArtist();
+//                Vote vote = voteEntry.getValue();
+//                String artist = vote.getArtist();
                 //если запись входит в интервал, добавляем её в статистику
                 if (voteAddTime >= leftBorder && voteAddTime <= rightBorder) {
-                    Long artistCountVotes = artistsVoteCount.get(artist);
-                    artistsVoteCount.put(artist, artistCountVotes + 1);
+                    votes++;
                 }
             }
-            intervalArtistStat.put(i, artistsVoteCount);
+            intervalStatistics.add(new IntervalStatistic(leftBorder, rightBorder, votes));
 
             leftBorder = rightBorder;
             rightBorder = leftBorder + intervalRange;
         }
-        System.out.println(intervalArtistStat);
+        System.out.println(intervalStatistics);
         return null;
     }
 
