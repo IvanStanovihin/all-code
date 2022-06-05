@@ -14,8 +14,6 @@ import java.util.Properties;
 @Service
 public class RequestManagerService {
 
-//    @Resource(name = "limits")
-//    private Properties limitsProperties;
 
     @Autowired
     private LimitsConfig limitsConfig;
@@ -31,12 +29,15 @@ public class RequestManagerService {
     }
 
     private void createBucket(String phone) {
+        int refillTokens = limitsConfig.getRefillTokens();
+        int refillTime = limitsConfig.getRefillTime();
+        int bandwidth = limitsConfig.getBandwidthCapacity();
         System.out.printf("Refill tokens: %s \nRefill time: %s \nBandwidth capacity: %s%n",
-                limitsConfig.getRefillTokens(),
-                limitsConfig.getRefillTime(),
-                limitsConfig.getBandwidthCapacity());
-        Refill refill = Refill.intervally(10, Duration.ofMinutes(1));
-        Bandwidth limit = Bandwidth.classic(10, refill);
+                refillTokens,
+                refillTime,
+                bandwidth);
+        Refill refill = Refill.intervally(refillTokens, Duration.ofMinutes(refillTime));
+        Bandwidth limit = Bandwidth.classic(bandwidth, refill);
         Bucket bucket = Bucket4j.builder()
                 .addLimit(limit)
                 .build();
