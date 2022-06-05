@@ -22,7 +22,8 @@ public class VoteRepository {
 
     @PostConstruct
     private void initArtists() {
-       votesStorage = ArtistsInitializer.initArtists();
+        ArtistsInitializer artistsInitializer = new ArtistsInitializer("artists.json");
+       votesStorage = artistsInitializer.initArtists();
         printStorage();
     }
 
