@@ -32,7 +32,7 @@ public class StatisticController {
         }catch(ArtistNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        statisticService.getStatistic(from, to, intervals, allowedArtists);
-        return ResponseEntity.ok().build();
+        String statistic = statisticService.getStatistic(from, to, intervals, allowedArtists);
+        return ResponseEntity.ok(statistic);
     }
 }

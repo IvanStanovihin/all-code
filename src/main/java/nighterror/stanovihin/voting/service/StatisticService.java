@@ -1,5 +1,6 @@
 package nighterror.stanovihin.voting.service;
 
+import com.google.gson.Gson;
 import nighterror.stanovihin.voting.model.*;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,9 @@ public class StatisticService {
             rightBorder = leftBorder + intervalRange;
         }
         System.out.println(intervalStatistics);
-        return null;
+        StatisticResponse statisticResponse = new StatisticResponse(intervalStatistics.toArray(new IntervalStatistic[0]));
+        Gson gson = new Gson();
+        return gson.toJson(statisticResponse);
     }
 
     //перебираем все записи в хранилище, считаем те которые входят в интервал
