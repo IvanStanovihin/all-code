@@ -1,12 +1,8 @@
 package nighterror.stanovihin.voting.service;
 
-import com.google.gson.Gson;
-import javafx.beans.binding.MapExpression;
 import nighterror.stanovihin.voting.model.*;
-import nighterror.stanovihin.voting.util.ArtistsInitializer;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Service
@@ -19,7 +15,7 @@ public class StatisticService {
         statisticStorage.put(currentMillis, vote);
     }
 
-    public String getStatistic(Long requestFrom, Long requestTo, Long countIntervals, String artists) {
+    public String getStatistic(Long requestFrom, Long requestTo, Long countIntervals, Set<String>allowedArtists) {
         ArrayList<IntervalStatistic>intervalStatistics = new ArrayList<>();
         long requestArea = requestTo - requestFrom;
         long intervalRange = (requestTo - requestFrom) / countIntervals;
@@ -28,20 +24,14 @@ public class StatisticService {
         int intervalIndex = 1;
         long leftBorder = requestFrom;
         long rightBorder = requestFrom + intervalRange;
+        System.out.println("Artists: " + allowedArtists);
         //находим записи подходящие ко времени from и to
         for (int i = 0; i < countIntervals; i++) {
             Long votes = 0L;
-            //Статистика для рассматриваемого интервала
-            Map<String, Long> artistsVoteCount = ArtistsInitializer.initArtists();
-            //перебираем все записи в хранилище, ищем те которые входят в интервал
-            for (Map.Entry<Long, Vote> voteEntry : statisticStorage.entrySet()) {
-                Long voteAddTime = voteEntry.getKey();
-//                Vote vote = voteEntry.getValue();
-//                String artist = vote.getArtist();
-                //если запись входит в интервал, добавляем её в статистику
-                if (voteAddTime >= leftBorder && voteAddTime <= rightBorder) {
-                    votes++;
-                }
+            if (allowedArtists != null && !allowedArtists.isEmpty()){
+                votes = getVotesInIntervalForArtists(leftBorder, rightBorder, allowedArtists);
+            }else{
+                votes = getVotesInInterval(leftBorder, rightBorder);
             }
             intervalStatistics.add(new IntervalStatistic(leftBorder, rightBorder, votes));
 
@@ -51,6 +41,36 @@ public class StatisticService {
         System.out.println(intervalStatistics);
         return null;
     }
+
+    //перебираем все записи в хранилище, считаем те которые входят в интервал
+    private Long getVotesInInterval(long leftBorder, long rightBorder){
+        long votes = 0;
+        for (Map.Entry<Long, Vote> voteEntry : statisticStorage.entrySet()) {
+            Long voteAddTime = voteEntry.getKey();
+            //если запись входит в интервал, добавляем её в статистику
+            if (voteAddTime >= leftBorder && voteAddTime <= rightBorder) {
+                votes++;
+            }
+        }
+        return votes;
+    }
+
+    //перебираем все записи в хранилище, считаем те которые входят в интервал с проверкой артиста
+    private Long getVotesInIntervalForArtists(long leftBorder, long rightBorder, Set<String>allowedArtists){
+        System.out.println("Allowed artists: " + allowedArtists);
+        long votes = 0;
+        for (Map.Entry<Long, Vote> voteEntry : statisticStorage.entrySet()) {
+            Long voteAddTime = voteEntry.getKey();
+            String artist = voteEntry.getValue().getArtist();
+            //если запись входит в интервал, добавляем её в статистику
+            if (voteAddTime >= leftBorder && voteAddTime <= rightBorder && allowedArtists.contains(artist)) {
+                votes++;
+            }
+        }
+        return votes;
+    }
+
+
 
 
     private void addInInterval(Map<Long, ArrayList<Vote>> votesInInterval, long index, Vote vote) {

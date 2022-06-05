@@ -31,8 +31,8 @@ public class VotingController {
 
     @PostMapping
     public ResponseEntity<?> vote(@RequestBody Vote vote){
-        System.out.println(String.format("Received request from phone: %s, vote for artist: %s", vote.getPhone(),
-                vote.getArtist()));
+        System.out.println(String.format("Received request from phone: %s, vote for artist: %s, millis: %s", vote.getPhone(),
+                vote.getArtist(), System.currentTimeMillis()));
         if (vote.getArtist() == null || vote.getPhone() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
