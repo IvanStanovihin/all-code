@@ -6,7 +6,9 @@ import nighterror.stanovihin.voting.model.ArtistsConfig;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.*;
 
@@ -21,17 +23,19 @@ public class ArtistsInitializer {
     public Map<String, Long> initArtists() {
         Gson gson = new Gson();
         Map<String, Long> artists = new HashMap<>();
-        URL artistUrl = this.getClass().getClassLoader().getResource("artists.json");
-        File artistsFile = new File(artistUrl.getFile());
-        System.out.println("Read artist init file: " + artistsFile);
-        ArtistsConfig artistsConfig = gson.fromJson(artistsFile, ArtistsConfig.class);
+//        URL artistUrl = this.getClass().getClassLoader().getResource("artists.json");
+//        File artistsFile = new File(artistUrl.getFile());
+        InputStream is = getClass().getResourceAsStream("/artists.json");
+        String fileContent = FilesReader.readFileContent(is);
+        System.out.println("Read artist init file: " + fileContent);
+        ArtistsConfig artistsConfig = gson.fromJson(fileContent, ArtistsConfig.class);
         for (String artist : artistsConfig.getArtists()) {
             artists.put(artist, 0L);
         }
         return artists;
     }
 
-    public static Set<String> validateArtists(String artists) throws ArtistNotFoundException {
+    public Set<String> validateArtists(String artists) throws ArtistNotFoundException {
         if (artists.isEmpty()) {
             return Collections.emptySet();
         }

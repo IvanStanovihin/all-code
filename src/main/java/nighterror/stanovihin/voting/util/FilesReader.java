@@ -1,8 +1,6 @@
 package nighterror.stanovihin.voting.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 
 public class FilesReader {
 
@@ -18,6 +16,19 @@ public class FilesReader {
             ex.printStackTrace();
         }
         return fileContent.toString();
+    }
 
+    public static String readFileContent(InputStream is) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try{
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            String line;
+            while ((line = br.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+        }catch (IOException ex){
+            ex.printStackTrace();
+        }
+        return stringBuilder.toString();
     }
 }

@@ -28,7 +28,8 @@ public class StatisticController {
         System.out.println("Received artists: " + artists);
         Set<String> allowedArtists = null;
         try {
-             allowedArtists = ArtistsInitializer.validateArtists(artists);
+            ArtistsInitializer artistsInitializer = new ArtistsInitializer("artists.json");
+             allowedArtists = artistsInitializer.validateArtists(artists);
         }catch(ArtistNotFoundException ex){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
